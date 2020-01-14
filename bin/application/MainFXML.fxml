@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="838.0" prefWidth="1245.0" style="-fx-background-color: F08080;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+   <children>
+      <Separator layoutX="938.0" layoutY="194.0" prefHeight="5.0" prefWidth="301.0" />
+      <Text layoutX="1077.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incoming Flight :" />
+      <Text layoutX="1009.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight ID :" />
+      <Text layoutX="1001.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination :" />
+      <Text layoutX="1009.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Flight" />
+      <Text layoutX="1009.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airplane Type" />
+      <Text layoutX="1009.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaving in (Mins)?" />
+      <TextField fx:id="FIDTextField" layoutX="1121.0" layoutY="262.0" prefHeight="25.0" prefWidth="95.0" promptText="e.g. A1343D" />
+      <TextField fx:id="DestTextField" layoutX="1077.0" layoutY="302.0" promptText="e.g.  Athens" />
+      <TextField fx:id="LiMTextField" layoutX="1152.0" layoutY="427.0" prefHeight="25.0" prefWidth="57.0" />
+      <ChoiceBox fx:id="TypeofFlight" layoutX="1152.0" layoutY="344.0" prefHeight="25.0" prefWidth="66.0">
+      </ChoiceBox>
+      <ChoiceBox fx:id="TypeofPlane" layoutX="1160.0" layoutY="391.0" prefHeight="16.0" prefWidth="66.0" />
+      <Separator layoutX="944.0" layoutY="500.0" prefHeight="5.0" prefWidth="301.0" />
+      <Separator layoutX="941.0" layoutY="192.0" orientation="VERTICAL" prefHeight="313.0" prefWidth="0.0" />
+      <Separator layoutY="586.0" prefHeight="5.0" prefWidth="1246.0" />
+      <TextArea fx:id="NoFTextArea" layoutX="39.0" layoutY="98.0" prefHeight="81.0" prefWidth="130.0" text="Number of Flights &#10;that arrived:" />
+      <TextArea editable="false" layoutX="205.0" layoutY="98.0" prefHeight="81.0" prefWidth="130.0" text="Total Number &#10;of Parking Slots:" />
+      <TextArea editable="false" layoutX="374.0" layoutY="98.0" prefHeight="81.0" prefWidth="174.0" text="Number of Flights leaving &#10;in the next 10 minutes:&#10;" />
+      <TextArea editable="false" layoutX="604.0" layoutY="98.0" prefHeight="81.0" prefWidth="174.0" text="Total Amount of Earnings:&#10;" />
+      <TextArea editable="false" layoutX="1034.0" layoutY="98.0" prefHeight="81.0" prefWidth="174.0" text="Total Time:&#10;(Hrs):(Mins)&#10;&#10;" />
+      <Button layoutX="1056.0" layoutY="468.0" mnemonicParsing="false" onAction="#SubmitNewFlight" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: #000000;" text="SUBMIT" textFill="RED" />
+      <MenuBar accessibleRole="MENU" layoutX="25.0" layoutY="15.0" prefHeight="73.0" prefWidth="1199.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Application">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#StartTimer" text="Start" />
+                  <MenuItem mnemonicParsing="false" onAction="#LoadMenuItem" text="Load" />
+                  <MenuItem mnemonicParsing="false" onAction="#ExitApp" text="Exit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Details">
+            <items>
+              	  <MenuItem mnemonicParsing="false" onAction="#GatesMenuItem" text="Gates" />
+                  <MenuItem mnemonicParsing="false" onAction="#FlightsMenuItem" text="Flights" />
+                  <MenuItem mnemonicParsing="false" onAction="#DelayedMenuItem" text="Delayed" />
+                  <MenuItem mnemonicParsing="false" onAction="#HoldingMenuItem" text="Holding" />
+                  <MenuItem mnemonicParsing="false" onAction="#NextDepMenuItem" text="Next Departures" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TextArea layoutX="565.0" layoutY="327.0" prefHeight="110.0" prefWidth="233.0" text="MEDIALAB&#10; AIRPORT">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextArea>
+      <ScrollPane fx:id="GenikosXwrosStathmeusisSP" layoutX="14.0" layoutY="189.0" prefHeight="125.0" prefWidth="428.0">
+         <content> 
+            <TextArea fx:id="GenikosXwrosStathmeusis" prefHeight="110.0" prefWidth="405.0" text="GENIKOS XWROS&#10; STATHMEYSIS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="MDSP" layoutX="455.0" layoutY="189.0" prefHeight="125.0" prefWidth="453.0">
+         <content>
+            <TextArea fx:id="MD" prefHeight="110.0" prefWidth="450.0" text="MD">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane> 
+      <ScrollPane fx:id="PylhSP" layoutX="14.0" layoutY="320.0" prefHeight="125.0" prefWidth="233.0">
+         <content>
+            <TextArea fx:id="Pylh" prefHeight="103.0" prefWidth="226.0" text="PYLH">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="ZoneASP" layoutX="14.0" layoutY="452.0" prefHeight="117.0" prefWidth="233.0">
+         <content>
+            <TextArea fx:id="ZoneA" prefHeight="101.0" prefWidth="212.0" text="ZONE A :">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="EmporikhPylhSP" layoutX="300.0" layoutY="321.0" prefHeight="125.0" prefWidth="233.0">
+         <content>
+            <TextArea fx:id="EmporikhPylh" prefHeight="106.0" prefWidth="226.0" text="EMPOREYMATIKH&#10; PYLH">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane> 
+      <ScrollPane fx:id="ZoneBSP" layoutX="294.0" layoutY="452.0" prefHeight="117.0" prefWidth="239.0">
+         <content>
+            <TextArea fx:id="ZoneB" prefHeight="110.0" prefWidth="233.0" text="ZONE B :">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="ZoneCSP" layoutX="562.0" layoutY="448.0" prefHeight="125.0" prefWidth="239.0">
+         <content>
+            <TextArea fx:id="ZoneC" prefHeight="110.0" prefWidth="233.0" text="ZONE C :">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
