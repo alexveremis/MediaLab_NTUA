@@ -1,12 +1,12 @@
 package application;
 
-import com.sun.prism.paint.Color;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -18,8 +18,9 @@ public class AnswerBox {
 		window.setMinWidth(500);
 		Label label=new Label();
 		label.setText(message);
-		String st2 = "-fx-background-color: rgba(255, 255, 255, 0.92);";
+		String st2 = "-fx-font-weight: bold";
 		label.setStyle(st2);
+		label.setTextFill(Color.WHITE);
 		Button closeButton =new Button("Close pop up window");
 		closeButton.setOnAction(e->window.close());
 		VBox layout =new VBox(10);

@@ -9,7 +9,6 @@ public class Plane implements PlaneState {
 	
 	@Override
 	public void setAll(String F,String C,int ToF,int ToP,int LiM,int i,int Yp) {
-		System.out.println(C);
 		FlightID=F;
 		City=C;
 		TypeofFlight=ToF;

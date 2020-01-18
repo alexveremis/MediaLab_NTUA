@@ -31,6 +31,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 
 
 public class Main extends Application{
@@ -82,7 +83,7 @@ public class Main extends Application{
 	@FXML
 	private ScrollPane ZoneBSP;
 	@FXML
-	private ScrollPane ZoneCSP=new ScrollPane();
+	private ScrollPane ZoneCSP;
 	@FXML 
 	private TextArea TotalTimeTA;
 	@FXML 
@@ -95,17 +96,20 @@ public class Main extends Application{
 	private TextArea TotalNumberESTA;
 	@FXML 
 	private TextArea MessageComponent;
+	
 	AirportState aerodromio = new Airport();
 	private static ArrayList<Plane> aeroplana = new ArrayList<Plane>(); 
 	private static int ActivePlanes,totalFlightsArrived,FlightsLeavingin10mins,Mins,Hours,NumofDelFlights;
 	private static double totalCost;
 	private static String SCENARIO_IDargument;
 	public void main2(String args) {
+		//MessageComponent.setTextFill(Color.WHITE);
+		//String style = "-fx-font-weight: bold;";
+		//MessageComponent.setStyle(style);
 		aeroplana.clear();
 		String SCENARIO_ID=args;
-		String[] tempo;
-		String line,FID,C,SID;
-		int Cat,ES,Cost,i=0,ToF,ToP,LiM,Yp;
+		String line;
+		int i=0;
 		ActivePlanes=totalFlightsArrived=Mins=Hours=0;
 		totalCost=0.0;
 		for (i=0;i<8;i++)aerodromio.setAll(i+1,0,0,"0",i,0);
@@ -113,12 +117,7 @@ public class Main extends Application{
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader("multimedia/airport_"+SCENARIO_ID+".txt"));
 				while((line=reader.readLine())!=null) {
-					tempo=line.split(",");
-					Cat=Integer.parseInt(tempo[0]);
-					ES=Integer.parseInt(tempo[1]);
-					Cost=Integer.parseInt(tempo[2]);
-					SID=tempo[3];
-					aerodromio.setAll(Cat,ES,Cost,SID,i,1);
+					i=readAerodromio(line,i);
 					i++;
 				}
 				reader.close();
@@ -126,61 +125,70 @@ public class Main extends Application{
 				reader = new BufferedReader(new FileReader("multimedia/setup_"+SCENARIO_ID+".txt"));
 				i=0;
 				while((line=reader.readLine())!=null) {
-					tempo=line.split(",");
-					FID=tempo[0];
-					C=tempo[1];
-					ToF=Integer.parseInt(tempo[2]);
-					ToP=Integer.parseInt(tempo[3]);
-					LiM=Integer.parseInt(tempo[4]);
-					Yp=Integer.parseInt(tempo[5]);
-					Plane aeroplanaki =new Plane();
-					aeroplanaki.setAll(FID,C,ToF,ToP,LiM,i,Yp);
-					aeroplana.add(aeroplanaki);
-					totalFlightsArrived++;
-					ActivePlanes++;
+					readPlanes(line, i);
 				}
 				reader.close();
-				//i=readPlanes(args[1],i);
-				System.out.println(ActivePlanes);
+				MessageComponent.appendText("Just read from files: 'airport_"+SCENARIO_ID+".txt' and 'setup_"+ SCENARIO_ID+".txt' \n");
+				MessageComponent.appendText("Just read "+ ActivePlanes+" planes from the text setup\n");
 				findPlaceforPlanes(i,aerodromio);
-				//System.out.println((end-start)/5000);//ena lepto==5000msec edw
 			
 			}
 			catch(IOException e) { //NotFoundException
+				MessageComponent.appendText("There are not such 'airport_"+SCENARIO_ID+".txt' and 'setup_"+ SCENARIO_ID+".txt' \n");
 				System.err.format("There are not such 'airport_%s.txt' and 'setup_%s.txt' ",SCENARIO_ID,SCENARIO_ID);
 				e.printStackTrace(); 
 			}
-			
-			if(aerodromio.getKatastasi(1)==0)PylhSP.setVisible(false);
-			if(aerodromio.getKatastasi(2)==0)EmporikhPylhSP.setVisible(false);
-			if(aerodromio.getKatastasi(3)==0)ZoneASP.setVisible(false);
-			if(aerodromio.getKatastasi(4)==0)ZoneBSP.setVisible(false); 
-			if(aerodromio.getKatastasi(5)==0) {ZoneCSP.setVisible(false);}
-			if(aerodromio.getKatastasi(6)==0)GenikosXwrosStathmeusisSP.setVisible(false);
-			if(aerodromio.getKatastasi(7)==0)MDSP.setVisible(false);
-
-			
+			setInVisibility();	
+	}
+	public int readAerodromio(String line,int i) {
+		String[] tempo;
+		int Cat,ES,Cost;
+		String SID;
+		tempo=line.split(",");
+		Cat=Integer.parseInt(tempo[0]);
+		ES=Integer.parseInt(tempo[1]);
+		Cost=Integer.parseInt(tempo[2]);
+		SID=tempo[3];
+		aerodromio.setAll(Cat,ES,Cost,SID,i,1);
+		return i;
 	}
 	public static int readPlanes(String ARG,int i) {
-			String[] tempo;
-			String FID,C;
-			int ToF,ToP,LiM,Yp;
-			tempo=ARG.split(",");
-			FID=tempo[0];
-			C=tempo[1];
-			ToF=Integer.parseInt(tempo[2]);
-			ToP=Integer.parseInt(tempo[3]);
-			LiM=Integer.parseInt(tempo[4]);
-			Yp=Integer.parseInt(tempo[5]);
-			Plane aeroplanaki=new Plane();
-			aeroplanaki.setAll(FID,C,ToF,ToP,LiM,i,Yp);
-			aeroplana.add(aeroplanaki);
-			ActivePlanes++;
-			totalFlightsArrived++;
-			return i;
-		}
-	private static void findPlaceforPlanes(int i,AirportState aerodromio) {
-		//leipei if katastasi!=1
+		String[] tempo;
+		String FID,C;
+		int ToF,ToP,LiM,Yp;
+		tempo=ARG.split(",");
+		FID=tempo[0];
+		C=tempo[1];
+		ToF=Integer.parseInt(tempo[2]);
+		ToP=Integer.parseInt(tempo[3]);
+		LiM=Integer.parseInt(tempo[4]);
+		Yp=Integer.parseInt(tempo[5]);
+		Plane aeroplanaki=new Plane();
+		aeroplanaki.setAll(FID,C,ToF,ToP,LiM,i,Yp);
+		aeroplana.add(aeroplanaki);
+		ActivePlanes++;
+		totalFlightsArrived++;
+		return i;
+	}
+	public void setInVisibility() {
+		if(aerodromio.getKatastasi(1)!=0)PylhSP.setVisible(true);
+		else PylhSP.setVisible(false);
+		if(aerodromio.getKatastasi(2)!=0)EmporikhPylhSP.setVisible(true);
+		else EmporikhPylhSP.setVisible(false);
+		if(aerodromio.getKatastasi(3)!=0)ZoneASP.setVisible(true);
+		else ZoneASP.setVisible(false);
+		if(aerodromio.getKatastasi(4)!=0)ZoneBSP.setVisible(true); 
+		else ZoneBSP.setVisible(false);
+		if(aerodromio.getKatastasi(5)!=0) {ZoneCSP.setVisible(true);}
+		else ZoneCSP.setVisible(false);
+		if(aerodromio.getKatastasi(6)!=0)GenikosXwrosStathmeusisSP.setVisible(true);
+		else GenikosXwrosStathmeusisSP.setVisible(false);
+		if(aerodromio.getKatastasi(7)!=0)MDSP.setVisible(true);
+		else MDSP.setVisible(false);
+	}
+	
+	private void findPlaceforPlanes(int i,AirportState aerodromio) {
+		//if katast!=1
 		int j,k,Category;
 		String FID;
 		for(j=0;j<ActivePlanes;j++) {
@@ -197,17 +205,17 @@ public class Main extends Application{
 					aeroplanaki.setLandingTime(97,aeroplanaki.getToP());
 					aeroplanaki.setCategoryParked(Category,aerodromio.getCostofParking(Category));
 					totalFlightsArrived--;
-					System.out.println("mpike stin 8esi"+Category);
+					MessageComponent.appendText(aeroplanaki.getFID()+ " will land to "+Category+"\n");
 				}
 				else {
 					aeroplanaki.setKatastasi(0);
-					System.out.println("den vre8ike adeia 8esi ");
+					MessageComponent.appendText("There is no place for "+aeroplanaki.getFID()+" to land\n");
 				}
 			}
 		}
 	}
 	private int findPlaceforPlane(int j) {
-		//leipei if katastasi!=1
+		// if katastasi!=1
 		int k,Category;
 		String FID;
 			Plane aeroplanaki =aeroplana.get(j);
@@ -222,25 +230,36 @@ public class Main extends Application{
 					aeroplanaki.setLandingTime(97,aeroplanaki.getToP());
 					aeroplanaki.setCategoryParked(Category,aerodromio.getCostofParking(Category));
 					totalFlightsArrived--;
-					System.out.println("mpike stin 8esi"+Category);
+					MessageComponent.appendText(aeroplanaki.getFID()+ " will land to "+Category+"\n");
 				}
 				else {
 					aeroplanaki.setKatastasi(0);
-					System.out.println("den vre8ike adeia 8esi ");
+					MessageComponent.appendText("There is no place for "+aeroplanaki.getFID()+" to land\n");
 				}
 				return Category;
 	}
+	
 	private static int findBestCategory(int ToF,int ToP,int Lim, AirportState aerodromio,int Yp) {
 		if(Lim<=45 & ToF==1 & ToP>1 & aerodromio.getEmptySlots(1)>0 )return 1;
 		else if(Lim<=90 & ToF==2 & ToP>1 & aerodromio.getEmptySlots(2)>0 )return 2;
 		else if(Lim<=90 & ToF==1 & ToP>1 & aerodromio.getEmptySlots(3)>0)return 3;
 		else if(Lim<=120 & ToP>1 & aerodromio.getEmptySlots(4)>0)return 4;
 		else if(Lim<=180 & ToP==1 & aerodromio.getEmptySlots(5)>0)return 5;
-		else if(Lim<=240 & aerodromio.getEmptySlots(6)>0 & Yp<=6)return 6; //++yphresies (mpikan)
+		else if(Lim<=240 & aerodromio.getEmptySlots(6)>0 & Yp<=6)return 6; 
 		else if(Lim<=600 & ToF>1 & aerodromio.getEmptySlots(7)>0) return 7;
 		else return -1;
 	}
-	
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+	    // only got here if we didn't return false
+	    return true;
+	}
 	private static int getRandomNumber(int top) {
 		Random r = new Random();
 		return r.nextInt((top - 0) + 1);
@@ -252,8 +271,6 @@ public class Main extends Application{
 		TypeofFlight.setItems(ToF_List);
 		TypeofPlane.setValue("Mono");
 		TypeofPlane.setItems(ToP_List);
-		//ZoneCSP.setVisible(true);
-
 		
 	}
 	
@@ -284,19 +301,18 @@ public class Main extends Application{
 	}
 	@FXML
 	public void ExitApp(ActionEvent event) {
-		System.out.println("You are exiting the app");
+		MessageComponent.appendText("You are exiting the app\n");
 		Platform.exit();
 		System.exit(0);
 	} 
 	@FXML
 	public void StartTimer(ActionEvent event) {
+		MessageComponent.clear();
 		if(time!=null)time.stop();//otan patietai oxi gia prwti fora to start
-		System.out.println("You just started the app");
-		ZoneCSP.setVisible(false);
-		ZoneCSP.managedProperty().bind(ZoneCSP.visibleProperty());
+		MessageComponent.appendText("You just started the app\n");
 		main2(SCENARIO_IDargument);
 		
-		time = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+		time = new Timeline(new KeyFrame(Duration.seconds(5), new EventHandler<ActionEvent>() {
 			
 		    @Override
 		    public void handle(ActionEvent event) {
@@ -305,7 +321,7 @@ public class Main extends Application{
 						Mins=0;
 						Hours++;
 					}
-					if(Mins%5==0)MessageComponent.clear();
+					//if(Mins%5==0)MessageComponent.clear();
 					TotalTimeTA.clear();
 					TotalTimeTA.appendText("Total Time:\n"+Hours+":"+Mins);
 					FlightsLeavingin10mins=NumofDelFlights=0;
@@ -323,7 +339,7 @@ public class Main extends Application{
 							if (aeroplanaki.getLandingTime()<=0) {
 								aeroplanaki.setKatastasi(2);
 								if(aeroplanaki.getKatastasi()==2) {
-									System.out.println(aeroplanaki.getFID()+ " is Parked @ "+ aeroplanaki.getCategoryParked());
+									MessageComponent.appendText(aeroplanaki.getFID()+ " is Parked @ "+ aeroplanaki.getCategoryParked()+"\n");
 									int randomNumber=getRandomNumber(aeroplanaki.getLiM()*2);
 									if (randomNumber>aeroplanaki.getLiM())aeroplanaki.setAtomicCost(2*aerodromio.getCostofParking(aeroplanaki.getCategoryParked())+aeroplanaki.getAtomicCost());
 									else if(randomNumber<=aeroplanaki.getLiM()-25)aeroplanaki.setAtomicCost(0.8*aerodromio.getCostofParking(aeroplanaki.getCategoryParked())+aeroplanaki.getAtomicCost());
@@ -340,11 +356,11 @@ public class Main extends Application{
 							if (aeroplanaki.getFinalLiM()<=0) { 
 								totalCost+=aeroplanaki.getAtomicCost();
 								aerodromio.setEmptySlotsPlus1(aeroplanaki.getCategoryParked());
+								MessageComponent.appendText(aeroplanaki.getFID()+" just left for "+aeroplanaki.getCity()+" and payed "+aeroplanaki.getAtomicCost()+"\n");
 								aeroplana.remove(j);
 								if (j+1!=ActivePlanes)j--;
 								ActivePlanes--;
 								//FlightsLeavingin10mins--;
-								System.out.println("byeeee"+ j+"totalcost: "+totalCost);
 								findPlaceforPlanes(15,aerodromio);
 							}
 							else if(aeroplanaki.getFinalLiM()>aeroplanaki.getLiM())NumofDelFlights++;
@@ -355,47 +371,40 @@ public class Main extends Application{
 					Leavingin10TA.clear();
 					Leavingin10TA.appendText("Number of Flights leaving \nin the next 10 minutes:"+FlightsLeavingin10mins);
 					if(aerodromio.getKatastasi(1)!=0) {
-						int a=aerodromio.getWholeSlots(1);
-						int b=aerodromio.getEmptySlots(1);
 						Pylh.clear();
-						Pylh.appendText("PYLH\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+						Pylh.appendText("PYLH\n");
+						setTAText(aerodromio.getWholeSlots(1), aerodromio.getEmptySlots(1), Pylh);
 					}
 					if(aerodromio.getKatastasi(2)!=0) {
-						int a=aerodromio.getWholeSlots(2);
-						int b=aerodromio.getEmptySlots(2);
 						EmporikhPylh.clear();
-						EmporikhPylh.appendText("EMPOREYMATIKH\r\nPYLH\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+						EmporikhPylh.appendText("EMPOREUMATIKH PYLH\n");
+						setTAText(aerodromio.getWholeSlots(2), aerodromio.getEmptySlots(2), EmporikhPylh);
 					}
 					if(aerodromio.getKatastasi(3)!=0) {
-						int a=aerodromio.getWholeSlots(3);
-						int b=aerodromio.getEmptySlots(3);
 						ZoneA.clear();
-						ZoneA.appendText("ZONE A\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
-						
+						ZoneA.appendText("ZONE A\n");
+						setTAText(aerodromio.getWholeSlots(3), aerodromio.getEmptySlots(3), ZoneA);
 					}
 					if(aerodromio.getKatastasi(4)!=0) {
-						int a=aerodromio.getWholeSlots(4);
-						int b=aerodromio.getEmptySlots(4);
 						ZoneB.clear();
-						ZoneB.appendText("ZONE B\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+						ZoneB.appendText("ZONE B\n");
+						setTAText(aerodromio.getWholeSlots(4), aerodromio.getEmptySlots(4), ZoneB);
 					}
 					if(aerodromio.getKatastasi(5)!=0){
-						int a=aerodromio.getWholeSlots(5);
-						int b=aerodromio.getEmptySlots(5);
 						ZoneC.clear();
-						ZoneC.appendText("ZONE C\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+						ZoneC.appendText("ZONE C\n");
+						setTAText(aerodromio.getWholeSlots(5), aerodromio.getEmptySlots(5), ZoneC);
 					}
 					if(aerodromio.getKatastasi(6)!=0) {
-						int a=aerodromio.getWholeSlots(6);
-						int b=aerodromio.getEmptySlots(6);
 						GenikosXwrosStathmeusis.clear();
-						GenikosXwrosStathmeusis.appendText("GENIKOS XWROS\n STATHMEYSIS\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
-					}
+						GenikosXwrosStathmeusis.appendText("GENIKOS XWROS STATHMEUSIS\n");
+						setTAText(aerodromio.getWholeSlots(6), aerodromio.getEmptySlots(6), GenikosXwrosStathmeusis);
+						}
 					if(aerodromio.getKatastasi(7)!=0) {
-						int a=aerodromio.getWholeSlots(7);
-						int b=aerodromio.getEmptySlots(7);
 						MD.clear();
-						MD.appendText("MD\nTotal:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+						MD.appendText("MD\n");
+						setTAText(aerodromio.getWholeSlots(7), aerodromio.getEmptySlots(7), MD);
+						
 					}
 		    	
 		    }
@@ -403,6 +412,11 @@ public class Main extends Application{
 		time.setCycleCount(Timeline.INDEFINITE);
 		time.play();
 	} 
+	
+	public void setTAText(int a,int b,TextArea TA) {
+		TA.appendText("Total:"+a+"\nTaken:"+(a-b)+"\nFree:"+b);
+	}
+	
 	@FXML
 	public void SubmitNewFlight(ActionEvent event) {
 		int ToF,ToP,Yp=0,CategoryGoes;
@@ -410,6 +424,8 @@ public class Main extends Application{
 		if(Cleaning.isSelected())Yp+=5;
 		if(Passengers.isSelected())Yp+=10;
 		if(UnLoad.isSelected())Yp+=20;
+		if(FIDTextField.getText().length()==0 | DestTextField.getText().length()==0 | !isInteger(LiMTextField.getText()))MessageComponent.appendText("Please provide a right submission\n");
+		else {
 		String FlightID=FIDTextField.getText();
 		String Destination =DestTextField.getText();
 		int LiM = Integer.parseInt(LiMTextField.getText());
@@ -419,11 +435,12 @@ public class Main extends Application{
 		if(TypeofPlane.getValue()=="Mono")ToP=1;
 		else if(TypeofPlane.getValue()=="Turbo")ToP=2;
 		else ToP=3;
-		
+		MessageComponent.appendText("You just inserted : "+FlightID+","+Destination+","+ToF+","+ToP+","+LiM+","+Yp+"\n");
 		readPlanes(FlightID+","+Destination+","+ToF+","+ToP+","+LiM+","+Yp,54);
 		CategoryGoes=findPlaceforPlane(ActivePlanes-1);
 		if(CategoryGoes==-1)AnswerBox.display("Where does the Submitted plane go?", "It cannot go anywhere");
 		else AnswerBox.display("Where does the Submitted plane go?", "It will go to the Category "+CategoryGoes);
+		}
 	}
 	
 	@FXML
@@ -447,12 +464,10 @@ public class Main extends Application{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		//main2("21");
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
-		//main2("21");
 	}
 
 }

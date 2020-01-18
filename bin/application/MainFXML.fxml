@@ -63,61 +63,57 @@
             <Font size="24.0" />
          </font>
       </TextArea>
-      <ScrollPane fx:id="GenikosXwrosStathmeusisSP" layoutX="14.0" layoutY="189.0" prefHeight="125.0" prefWidth="428.0">
+      <ScrollPane fx:id="GenikosXwrosStathmeusisSP" layoutX="14.0" layoutY="189.0" prefHeight="125.0" prefWidth="428.0" visible="false">
          <content> 
-            <TextArea fx:id="GenikosXwrosStathmeusis" prefHeight="110.0" prefWidth="405.0" text="GENIKOS XWROS&#10; STATHMEYSIS">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextArea>
+            <TextArea fx:id="GenikosXwrosStathmeusis" prefHeight="110.0" prefWidth="405.0" text="GENIKOS XWROS&#10; STATHMEYSIS" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="MDSP" layoutX="455.0" layoutY="189.0" prefHeight="125.0" prefWidth="453.0">
+      <ScrollPane fx:id="MDSP" layoutX="455.0" layoutY="189.0" prefHeight="125.0" prefWidth="453.0" visible="false">
          <content>
             <TextArea fx:id="MD" prefHeight="110.0" prefWidth="450.0" text="MD">
                <font>
-                  <Font size="18.0" />
+                  <Font size="14.0" />
                </font>
             </TextArea>
          </content>
       </ScrollPane> 
-      <ScrollPane fx:id="PylhSP" layoutX="14.0" layoutY="320.0" prefHeight="125.0" prefWidth="233.0">
+      <ScrollPane fx:id="PylhSP" layoutX="14.0" layoutY="320.0" prefHeight="125.0" prefWidth="233.0" visible="false">
          <content>
-            <TextArea fx:id="Pylh" prefHeight="103.0" prefWidth="226.0" text="PYLH">
+            <TextArea fx:id="Pylh" prefHeight="122.0" prefWidth="226.0" text="PYLH">
                <font>
-                  <Font size="18.0" /> 
+                  <Font size="14.0" /> 
                </font>
             </TextArea>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="ZoneASP" layoutX="14.0" layoutY="452.0" prefHeight="117.0" prefWidth="233.0">
+      <ScrollPane fx:id="ZoneASP" layoutX="14.0" layoutY="452.0" prefHeight="117.0" prefWidth="233.0" visible="false">
          <content>
-            <TextArea fx:id="ZoneA" prefHeight="101.0" prefWidth="212.0" text="ZONE A :">
+            <TextArea fx:id="ZoneA" prefHeight="114.0" prefWidth="228.0" text="ZONE A :">
                <font>
-                  <Font size="18.0" />
+                  <Font size="14.0" />
                </font>
             </TextArea>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="EmporikhPylhSP" layoutX="300.0" layoutY="321.0" prefHeight="125.0" prefWidth="233.0">
+      <ScrollPane fx:id="EmporikhPylhSP" layoutX="300.0" layoutY="321.0" prefHeight="125.0" prefWidth="233.0" visible="false">
          <content>
-            <TextArea fx:id="EmporikhPylh" prefHeight="106.0" prefWidth="226.0" text="EMPOREYMATIKH&#10; PYLH">
+            <TextArea fx:id="EmporikhPylh" prefHeight="120.0" prefWidth="226.0" text="EMPOREYM. PYLH">
                <font>
-                  <Font size="18.0" />
+                  <Font size="14.0" />
                </font>
             </TextArea>
          </content>
       </ScrollPane> 
-      <ScrollPane fx:id="ZoneBSP" layoutX="294.0" layoutY="452.0" prefHeight="117.0" prefWidth="239.0">
+      <ScrollPane fx:id="ZoneBSP" layoutX="294.0" layoutY="452.0" prefHeight="117.0" prefWidth="239.0" visible="false">
          <content>
-            <TextArea fx:id="ZoneB" prefHeight="110.0" prefWidth="233.0" text="ZONE B :">
+            <TextArea fx:id="ZoneB" prefHeight="118.0" prefWidth="234.0" text="ZONE B :">
                <font>
-                  <Font size="18.0" />
+                  <Font size="14.0" />
                </font>
             </TextArea>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="ZoneCSP" layoutX="562.0" layoutY="448.0" prefHeight="125.0" prefWidth="239.0">
+      <ScrollPane fx:id="ZoneCSP" layoutX="562.0" layoutY="448.0" prefHeight="125.0" prefWidth="239.0" visible="false">
          <content>
             <TextArea fx:id="ZoneC" prefHeight="110.0" prefWidth="233.0" text="ZONE C :">
                <font>
