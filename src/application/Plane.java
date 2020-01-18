@@ -2,7 +2,7 @@ package application;
 import java.util.*;
 
 public class Plane implements PlaneState {
-	private int TypeofFlight,TypeofPlane,LeavinginMins,Yphresies,Katastasi,LandingTime,CategoryParked,FinalLiM;
+	private int TypeofFlight,TypeofPlane,LeavinginMins,Yphresies,Katastasi,LandingTime,CategoryParked,FinalLiM,MinsFC=-1,HrsFC=-1;
 	private double AtomicCost=0;
 	private String FlightID,City;
 	private int N;
@@ -19,7 +19,21 @@ public class Plane implements PlaneState {
 		Katastasi=0;
 		
 	}
-	
+	public int getHrsFC() {
+		return HrsFC;
+	}
+
+	public void setHrsFC(int hrsFC) {
+		HrsFC = hrsFC;
+	}
+
+	public int getMinsFC() {
+		return MinsFC;
+	}
+
+	public void setMinsFC(int minsFC) {
+		MinsFC = minsFC;
+	}
 	@Override
 	public int getFinalLiM() {
 		return FinalLiM;

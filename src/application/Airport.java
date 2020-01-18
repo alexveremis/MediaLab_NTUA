@@ -2,7 +2,7 @@ package application;
 import java.util.*;
 
 public class Airport implements AirportState{
-	private int[] Category=new int[8],EmptySlots=new int[8],CostofParking=new int[8],Katastasi=new int [8];
+	private int[] Category=new int[8],EmptySlots=new int[8],CostofParking=new int[8],Katastasi=new int [8],WholeSlots=new int[8];
 	private String[] SlotID=new String[8];
 	private int N;
 	
@@ -13,9 +13,19 @@ public class Airport implements AirportState{
 		CostofParking[Cat-1]=Cost;
 		SlotID[Cat-1]=SID;
 		Katastasi[Cat-1]=Kat;
+		WholeSlots[Cat-1]=ES;
 		//i Category[Cat]=Cat;
 	}
-	
+	public int getWholeSlots(int Cat) {
+		if(Katastasi[Cat-1]==1)return WholeSlots[Cat-1];
+		return -1;
+	}
+
+
+	public void setWholeSlots(int WS,int Cat) {
+		if(Katastasi[Cat-1]==1)WholeSlots[Cat-1] =WS;
+	}
+
 
 	public int getKatastasi(int Cat) {
 		return Katastasi[Cat-1];
@@ -55,6 +65,7 @@ public class Airport implements AirportState{
 	public void setEmptySlotsPlus1(int Cat) {
 			if(Katastasi[Cat-1]==1)EmptySlots[Cat-1]++;
 	}
+	
 	@Override
 	public int getAllEmptySlots() {
 		int sum=0;

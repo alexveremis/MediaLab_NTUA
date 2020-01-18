@@ -3,6 +3,26 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface AirportState {
+	
+	/**
+	 * It returns the total Slots of the particular Category
+	 * 
+	 * @author al_ve
+	 * 
+	 * @param Cat Parking Category
+	 * @return int -total Slots
+	 */
+	public int getWholeSlots(int Cat);
+	
+	/**
+	 * It sets the total Slots of the particular Category to the number given (WS).
+	 * 
+	 * @author al_ve
+	 * 
+	 * @param WS - the total Slots that will be set
+	 * @param Cat Parking Category
+	 */
+	public void setWholeSlots(int WS,int Cat);
 		/**
 		 * It returns the Slot ID of the particular Category
 		 * 

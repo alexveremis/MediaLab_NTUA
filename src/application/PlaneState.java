@@ -28,4 +28,8 @@ public interface PlaneState {
 	public double getAtomicCost();
 	public void setFinalLiM(int finalLiM);
 	public int getFinalLiM();
+	public int getHrsFC();
+	public void setHrsFC(int a);
+	public int getMinsFC();
+	public void setMinsFC(int a);
 }
