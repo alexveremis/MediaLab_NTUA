@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
@@ -56,34 +58,6 @@ public class Main extends Application{
 	private TextField LiMTextField;
 	@FXML 
 	private TextField DestTextField;
-	@FXML
-	private TextArea GenikosXwrosStathmeusis;
-	@FXML
-	private TextArea MD;
-	@FXML
-	private TextArea Pylh;
-	@FXML
-	private TextArea EmporikhPylh;
-	@FXML
-	private TextArea ZoneA;
-	@FXML
-	private TextArea ZoneB;
-	@FXML
-	private TextArea ZoneC;
-	@FXML
-	private ScrollPane GenikosXwrosStathmeusisSP;
-	@FXML
-	private ScrollPane MDSP;
-	@FXML
-	private ScrollPane PylhSP;
-	@FXML
-	private ScrollPane EmporikhPylhSP;
-	@FXML
-	private ScrollPane ZoneASP;
-	@FXML
-	private ScrollPane ZoneBSP;
-	@FXML
-	private ScrollPane ZoneCSP;
 	@FXML 
 	private TextArea TotalTimeTA;
 	@FXML 
@@ -96,7 +70,20 @@ public class Main extends Application{
 	private TextArea TotalNumberESTA;
 	@FXML 
 	private TextArea MessageComponent;
-	
+	@FXML
+	private PieChart pieGXS;
+	@FXML
+	private PieChart pieMDSP;
+	@FXML
+	private PieChart pieP;
+	@FXML
+	private PieChart pieEP;
+	@FXML
+	private PieChart pieZoneC;
+	@FXML
+	private PieChart pieZoneB;
+	@FXML
+	private PieChart pieZoneA;
 	AirportState aerodromio = new Airport();
 	private static ArrayList<Plane> aeroplana = new ArrayList<Plane>(); 
 	private static int ActivePlanes,totalFlightsArrived,FlightsLeavingin10mins,Mins,Hours,NumofDelFlights;
@@ -106,6 +93,8 @@ public class Main extends Application{
 		//MessageComponent.setTextFill(Color.WHITE);
 		//String style = "-fx-font-weight: bold;";
 		//MessageComponent.setStyle(style);
+		TotalTimeTA.clear();
+		TotalTimeTA.appendText("Total Time:\n"+0+":"+0);
 		aeroplana.clear();
 		String SCENARIO_ID=args;
 		String line;
@@ -138,7 +127,8 @@ public class Main extends Application{
 				System.err.format("There are not such 'airport_%s.txt' and 'setup_%s.txt' ",SCENARIO_ID,SCENARIO_ID);
 				e.printStackTrace(); 
 			}
-			setInVisibility();	
+			setInVisibilityforPies();	
+			setChart();
 	}
 	public int readAerodromio(String line,int i) {
 		String[] tempo;
@@ -170,23 +160,75 @@ public class Main extends Application{
 		totalFlightsArrived++;
 		return i;
 	}
-	public void setInVisibility() {
-		if(aerodromio.getKatastasi(1)!=0)PylhSP.setVisible(true);
-		else PylhSP.setVisible(false);
-		if(aerodromio.getKatastasi(2)!=0)EmporikhPylhSP.setVisible(true);
-		else EmporikhPylhSP.setVisible(false);
-		if(aerodromio.getKatastasi(3)!=0)ZoneASP.setVisible(true);
-		else ZoneASP.setVisible(false);
-		if(aerodromio.getKatastasi(4)!=0)ZoneBSP.setVisible(true); 
-		else ZoneBSP.setVisible(false);
-		if(aerodromio.getKatastasi(5)!=0) {ZoneCSP.setVisible(true);}
-		else ZoneCSP.setVisible(false);
-		if(aerodromio.getKatastasi(6)!=0)GenikosXwrosStathmeusisSP.setVisible(true);
-		else GenikosXwrosStathmeusisSP.setVisible(false);
-		if(aerodromio.getKatastasi(7)!=0)MDSP.setVisible(true);
-		else MDSP.setVisible(false);
-	}
 	
+	public void setInVisibilityforPies() {
+		if(aerodromio.getKatastasi(1)!=0)pieP.setVisible(true);
+		else pieP.setVisible(false);
+		if(aerodromio.getKatastasi(2)!=0)pieEP.setVisible(true);
+		else pieEP.setVisible(false);
+		if(aerodromio.getKatastasi(3)!=0)pieZoneA.setVisible(true);
+		else pieZoneA.setVisible(false);
+		if(aerodromio.getKatastasi(4)!=0)pieZoneB.setVisible(true); 
+		else pieZoneB.setVisible(false);
+		if(aerodromio.getKatastasi(5)!=0) {pieZoneC.setVisible(true);}
+		else pieZoneC.setVisible(false);
+		if(aerodromio.getKatastasi(6)!=0)pieGXS.setVisible(true);
+		else pieGXS.setVisible(false);
+		if(aerodromio.getKatastasi(7)!=0)pieMDSP.setVisible(true);
+		else pieMDSP.setVisible(false);
+	}
+	public void setChart() {
+		double fPylh=1,fEmpPylh=1,fZoneA=1,fZoneB=1,fZoneC=1,fGXS=1,fMDSP=1;
+		if(aerodromio.getWholeSlots(1)!=0) fPylh=(aerodromio.getWholeSlots(1)-aerodromio.getEmptySlots(1))*1.0/aerodromio.getWholeSlots(1);
+		if(aerodromio.getWholeSlots(2)!=0)fEmpPylh=(aerodromio.getWholeSlots(2)-aerodromio.getEmptySlots(2))*1.0/aerodromio.getWholeSlots(2);
+		if(aerodromio.getWholeSlots(3)!=0)fZoneA=(aerodromio.getWholeSlots(3)-aerodromio.getEmptySlots(3))*1.0/aerodromio.getWholeSlots(3);
+		if(aerodromio.getWholeSlots(4)!=0)fZoneB=(aerodromio.getWholeSlots(4)-aerodromio.getEmptySlots(4))*1.0/aerodromio.getWholeSlots(4);
+		if(aerodromio.getWholeSlots(5)!=0)fZoneC=(aerodromio.getWholeSlots(5)-aerodromio.getEmptySlots(5))*1.0/aerodromio.getWholeSlots(5);
+		if(aerodromio.getWholeSlots(6)!=0)fGXS=(aerodromio.getWholeSlots(6)-aerodromio.getEmptySlots(6))*1.0/aerodromio.getWholeSlots(6);
+		if(aerodromio.getWholeSlots(7)!=0)fMDSP=(aerodromio.getWholeSlots(7)-aerodromio.getEmptySlots(7))*1.0/aerodromio.getWholeSlots(7);
+		int a=aerodromio.getWholeSlots(1)-aerodromio.getEmptySlots(1);
+		ObservableList<Data> listPylh=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(1),100-fPylh*100),
+				new PieChart.Data("Taken : "+a,fPylh*100)
+				);
+		pieP.setData(listPylh);
+		a=aerodromio.getWholeSlots(2)-aerodromio.getEmptySlots(2);
+		ObservableList<Data> listEmpPylh=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(2),100-fEmpPylh*100),
+				new PieChart.Data("Taken : "+a,fEmpPylh*100)
+				);
+		pieEP.setData(listEmpPylh);
+		a=aerodromio.getWholeSlots(3)-aerodromio.getEmptySlots(3);
+		ObservableList<Data> listZoneA=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(3),100-fZoneA*100),
+				new PieChart.Data("Taken : "+a,fZoneA*100)
+				);
+		pieZoneA.setData(listZoneA);
+		a=aerodromio.getWholeSlots(4)-aerodromio.getEmptySlots(4);
+		ObservableList<Data> listZoneB=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(4),100-fZoneB*100),
+				new PieChart.Data("Taken : "+a,fZoneB*100)
+				);
+		pieZoneB.setData(listZoneB);
+		a=aerodromio.getWholeSlots(5)-aerodromio.getEmptySlots(5);
+		ObservableList<Data> listZoneC=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(5),100-fZoneC*100),
+				new PieChart.Data("Taken : "+a,fZoneC*100)
+				);
+		pieZoneC.setData(listZoneC);
+		a=aerodromio.getWholeSlots(6)-aerodromio.getEmptySlots(6);
+		ObservableList<Data> listGXS=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(6),100-fGXS*100),
+				new PieChart.Data("Taken : "+a,fGXS*100)
+				);
+		pieGXS.setData(listGXS);
+		a=aerodromio.getWholeSlots(7)-aerodromio.getEmptySlots(7);
+		ObservableList<Data> listMDSP=FXCollections.observableArrayList(
+				new PieChart.Data("Free : "+aerodromio.getEmptySlots(7),100-fMDSP*100),
+				new PieChart.Data("Taken : "+a,fMDSP*100)
+				);
+		pieMDSP.setData(listMDSP);
+	}
 	private void findPlaceforPlanes(int i,AirportState aerodromio) {
 		//if katast!=1
 		int j,k,Category;
@@ -321,7 +363,7 @@ public class Main extends Application{
 						Mins=0;
 						Hours++;
 					}
-					//if(Mins%5==0)MessageComponent.clear();
+					if(Mins%5==0)MessageComponent.clear();//for cleaning the msgcmpnt
 					TotalTimeTA.clear();
 					TotalTimeTA.appendText("Total Time:\n"+Hours+":"+Mins);
 					FlightsLeavingin10mins=NumofDelFlights=0;
@@ -370,43 +412,7 @@ public class Main extends Application{
 				}
 					Leavingin10TA.clear();
 					Leavingin10TA.appendText("Number of Flights leaving \nin the next 10 minutes:"+FlightsLeavingin10mins);
-					if(aerodromio.getKatastasi(1)!=0) {
-						Pylh.clear();
-						Pylh.appendText("PYLH\n");
-						setTAText(aerodromio.getWholeSlots(1), aerodromio.getEmptySlots(1), Pylh);
-					}
-					if(aerodromio.getKatastasi(2)!=0) {
-						EmporikhPylh.clear();
-						EmporikhPylh.appendText("EMPOREUMATIKH PYLH\n");
-						setTAText(aerodromio.getWholeSlots(2), aerodromio.getEmptySlots(2), EmporikhPylh);
-					}
-					if(aerodromio.getKatastasi(3)!=0) {
-						ZoneA.clear();
-						ZoneA.appendText("ZONE A\n");
-						setTAText(aerodromio.getWholeSlots(3), aerodromio.getEmptySlots(3), ZoneA);
-					}
-					if(aerodromio.getKatastasi(4)!=0) {
-						ZoneB.clear();
-						ZoneB.appendText("ZONE B\n");
-						setTAText(aerodromio.getWholeSlots(4), aerodromio.getEmptySlots(4), ZoneB);
-					}
-					if(aerodromio.getKatastasi(5)!=0){
-						ZoneC.clear();
-						ZoneC.appendText("ZONE C\n");
-						setTAText(aerodromio.getWholeSlots(5), aerodromio.getEmptySlots(5), ZoneC);
-					}
-					if(aerodromio.getKatastasi(6)!=0) {
-						GenikosXwrosStathmeusis.clear();
-						GenikosXwrosStathmeusis.appendText("GENIKOS XWROS STATHMEUSIS\n");
-						setTAText(aerodromio.getWholeSlots(6), aerodromio.getEmptySlots(6), GenikosXwrosStathmeusis);
-						}
-					if(aerodromio.getKatastasi(7)!=0) {
-						MD.clear();
-						MD.appendText("MD\n");
-						setTAText(aerodromio.getWholeSlots(7), aerodromio.getEmptySlots(7), MD);
-						
-					}
-		    	
+					setChart();
 		    }
 		}));
 		time.setCycleCount(Timeline.INDEFINITE);
